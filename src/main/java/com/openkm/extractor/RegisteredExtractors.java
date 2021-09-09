@@ -65,7 +65,7 @@ public class RegisteredExtractors {
 			plugin.setClassName(te.getClass().getCanonicalName());
 			plugin.setActive(false);
 
-			for (String className : Config.REGISTERED_TEXT_EXTRACTORS) {
+			for (String className : Config.DEFAULT_TEXT_EXTRACTORS) {
 				if (te.getClass().getSimpleName().equals(className)) {
 					plugin.setActive(true);
 					break;
