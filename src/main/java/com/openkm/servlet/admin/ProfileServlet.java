@@ -254,6 +254,7 @@ public class ProfileServlet extends BaseServlet {
 		prf.getPrfMisc().setNotifyExternalUsers(WebUtils.getBoolean(request, "prf_misc_notify_external_users"));
 		prf.getPrfMisc().setAcrobatPluginPreview(WebUtils.getBoolean(request, "prf_misc_acrobat_plugin_preview"));
 		prf.getPrfMisc().setIncreaseVersion(WebUtils.getBoolean(request, "prf_misc_increase_version"));
+		prf.getPrfMisc().setSentMailStorage(WebUtils.getString(request, "prf_misc_sent_mail_storage"));
 		prf.getPrfMisc().setExtensions(new HashSet<String>(WebUtils.getStringList(request, "prf_misc_extensions")));
 		prf.getPrfMisc().setReports(new HashSet<Long>(WebUtils.getLongList(request, "prf_misc_reports")));
 		prf.getPrfMisc().setWorkflows(new HashSet<String>(WebUtils.getStringList(request, "prf_misc_workflows")));

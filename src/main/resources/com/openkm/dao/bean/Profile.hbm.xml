@@ -36,6 +36,9 @@
       <property name="increaseVersion" type="true_false" not-null="true">
         <column name="PRF_MSC_INCREASE_VER" default="'T'"/>
       </property>
+      <property name="sentMailStorage" not-null="true">
+        <column name="PRF_MSC_SENT_MAIL_STORAGE"/>
+      </property>
       <set name="extensions" table="OKM_PROFILE_MSC_EXTENSION" lazy="false">
         <key column="PEX_ID" not-null="true"/>
         <element column="PEX_EXTENSION" type="string"/>

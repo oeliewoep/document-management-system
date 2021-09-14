@@ -22,11 +22,14 @@
 package com.openkm.module;
 
 import com.openkm.automation.AutomationException;
+import com.openkm.bean.Document;
 import com.openkm.bean.ExtendedAttributes;
 import com.openkm.bean.Mail;
 import com.openkm.core.*;
+import com.openkm.extension.core.ExtensionException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public interface MailModule {
@@ -39,7 +42,7 @@ public interface MailModule {
 	 * @throws PathNotFoundException If the parent mail doesn't exist.
 	 * @throws ItemExistsException If there is already a mail in the
 	 * repository with the same name in the same path.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the parent mail because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
 	 */
@@ -50,7 +53,7 @@ public interface MailModule {
 	/**
 	 * Obtains properties from a previously created mail.
 	 *
-	 * @param mailId The path that identifies an unique mail, or its UUID. 
+	 * @param mailId The path that identifies an unique mail, or its UUID.
 	 * @return A mail object with the selected mail properties.
 	 * @throws PathNotFoundException If the indicated mail doesn't exist.
 	 * @throws RepositoryException If there is any general repository problem.
@@ -59,13 +62,39 @@ public interface MailModule {
 			RepositoryException, DatabaseException;
 
 	/**
+     * Create a new mail attachment
+     *
+     * @param mailId The path that identifies an unique mail, or its UUID.
+     */
+    Document createAttachment(String token, String mailId, String docName, InputStream is) throws UnsupportedMimeTypeException,
+            FileSizeExceededException, UserQuotaExceededException, VirusDetectedException, ItemExistsException, PathNotFoundException,
+            AccessDeniedException, RepositoryException, IOException, DatabaseException, ExtensionException, AutomationException;
+
+    /**
+     * Delete an attachment
+     *
+     * @param mailId The path that identifies an unique mail, or its UUID.
+     * @param docId  The path that identifies an unique document, or its UUID.
+     */
+    void deleteAttachment(String token, String mailId, String docId) throws LockException, PathNotFoundException, AccessDeniedException,
+            RepositoryException, DatabaseException;
+
+    /**
+     * Obtain all the attachments
+     *
+     * @param mailId The path that identifies an unique mail, or its UUID.
+     */
+    List<Document> getAttachments(String token, String mailId) throws AccessDeniedException, PathNotFoundException, RepositoryException,
+            DatabaseException;
+
+	/**
 	 * Delete a mail the repository. It is a logical delete,
 	 * so really is moved to the user trash and can be restored.
 	 *
-	 * @param mailPath The path that identifies an unique mail.  
+	 * @param mailPath The path that identifies an unique mail.
 	 * @throws LockException Can't delete a mail with locked documents.
 	 * @throws PathNotFoundException If there is no mail in the repository in this path.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the mail because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
 	 */
@@ -76,10 +105,10 @@ public interface MailModule {
 	 * Deletes definitively a mail from the repository. It is a physical delete, so
 	 * the mail can't be restored.
 	 *
-	 * @param mailPath The path that identifies an unique mail.  
+	 * @param mailPath The path that identifies an unique mail.
 	 * @throws LockException Can't delete a mail with locked documents.
 	 * @throws PathNotFoundException If there is no mail in the repository in this path.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the mail because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
 	 */
@@ -89,13 +118,13 @@ public interface MailModule {
 	/**
 	 * Rename a mail in the repository.
 	 *
-	 * @param mailPath The path that identifies an unique mail.  
+	 * @param mailPath The path that identifies an unique mail.
 	 * @param newName The new mail name.
 	 * @return A mail object with the new mail properties.
 	 * @throws PathNotFoundException If there is no mail in the repository in this path.
 	 * @throws ItemExistsException If there is already a mail in the
 	 * repository with the same name in the same path.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the mail because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
 	 */
@@ -110,7 +139,7 @@ public interface MailModule {
 	 * @throws PathNotFoundException If the dstPath does not exists.
 	 * @throws ItemExistsException If there is already a mail in the
 	 * destination mail with the same name.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the parent mail or the destination mail
 	 * because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
@@ -126,7 +155,7 @@ public interface MailModule {
 	 * @throws PathNotFoundException If the dstPath does not exists.
 	 * @throws ItemExistsException If there is already a mail in the
 	 * destination mail with the same name.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the parent mail or the destination mail
 	 * because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
@@ -144,7 +173,7 @@ public interface MailModule {
 	 * @throws PathNotFoundException If the dstPath does not exists.
 	 * @throws ItemExistsException If there is already a mail in the
 	 * destination mail with the same name.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't modify the parent mail or the destination mail
 	 * because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
@@ -180,7 +209,7 @@ public interface MailModule {
 	 * Test if a mail path is valid.
 	 *
 	 * @param mailId The path that identifies an unique mail or its UUID.
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't access this mail because of lack of permissions.
 	 * @throws RepositoryException If there is any general repository problem.
 	 * @throws PathNotFoundException If there is no mail in the repository with this path.
@@ -193,7 +222,7 @@ public interface MailModule {
 	 *
 	 * @param uuid The unique mail id.
 	 * @return The mail path
-	 * @throws AccessDeniedException If there is any security problem: 
+	 * @throws AccessDeniedException If there is any security problem:
 	 * you can't access this folder because of lack of permissions.
 	 * @throws RepositoryException If there is any problem.
 	 */

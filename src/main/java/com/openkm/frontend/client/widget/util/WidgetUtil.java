@@ -19,11 +19,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-package com.openkm.frontend.client.widget;
+package com.openkm.frontend.client.widget.util;
 
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.openkm.frontend.client.Main;
+import com.openkm.frontend.client.bean.GWTDocument;
+import com.openkm.frontend.client.util.Util;
 import com.openkm.frontend.client.widget.dashboard.keymap.TagCloud;
 
 import java.util.Collection;
@@ -33,7 +41,6 @@ import java.util.Iterator;
  * WidgetUtil
  *
  * @author jllort
- *
  */
 public class WidgetUtil {
 
@@ -59,5 +66,39 @@ public class WidgetUtil {
 			}
 			keywordsCloud.add(tagKey);
 		}
+	}
+
+	/**
+	 * getAttachmentWidget
+	 */
+	public static Button getAttachmentWidget(final GWTDocument attach, final AttachmentHandler handler) {
+		String html = Util.mimeImageHTML(attach.getMimeType()) + "<span>" + attach.getName() + " ("
+				+ Util.formatSize(attach.getActualVersion().getSize()) + ")</span>";
+		final Button button = new Button();
+		button.setHTML(html);
+		button.setTitle(attach.getName());
+		button.setStyleName("okm-Button-Mail");
+		button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Util.downloadFileByUUID(attach.getUuid(), "");
+			}
+		});
+		button.addMouseDownHandler(new MouseDownHandler() {
+			@Override
+			public void onMouseDown(MouseDownEvent event) {
+				handler.onAttachmentMouseDown(event, attach, button);
+			}
+		});
+		return button;
+	}
+
+	/**
+	 * getSpace
+	 */
+	public static HTML getSpace() {
+		HTML html = Util.hSpace("2px");
+		html.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		return html;
 	}
 }

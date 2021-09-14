@@ -567,6 +567,34 @@ public class AuthServlet extends OKMRemoteServiceServlet implements OKMAuthServi
 	}
 
 	@Override
+    public List<GWTUser> getUsers(List<String> users) throws OKMException {
+        log.debug("getUsers()");
+        List<GWTUser> userList = new ArrayList<GWTUser>();
+        updateSessionManager();
+
+        try {
+            for (String userId : users) {
+                GWTUser user = new GWTUser();
+                user.setId(userId);
+                user.setUsername(OKMAuth.getInstance().getName(null, userId));
+                userList.add(user);
+            }
+
+            Collections.sort(userList, GWTUserComparator.getInstance(getLanguage()));
+        } catch (PrincipalAdapterException e) {
+            log.error(e.getMessage(), e);
+            throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMAuthService, ErrorCode.CAUSE_PrincipalAdapter),
+                    e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMAuthService, ErrorCode.CAUSE_General), e.getMessage());
+        }
+
+        log.debug("getUsers: {}", userList);
+        return userList;
+    }
+
+	@Override
 	public List<String> getAllRoles() throws OKMException {
 		log.debug("getAllRoles()");
 		List<String> roleList = new ArrayList<String>();

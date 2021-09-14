@@ -267,7 +267,37 @@ public class ToolBar extends Composite implements OriginPanel, HasToolBarEvent, 
 	 * executeAddRecord
 	 */
 	public void executeWriteMail() {
+		// Check if mails storage is in current folder or in default folder
+		if (Main.get().mainPanel.bottomPanel.userInfo.isQuotaExceed()) {
+			Main.get().showError("UserQuotaExceed",
+					new OKMException("OKM-" + ErrorCode.ORIGIN_OKMBrowser + ErrorCode.CAUSE_QuotaExceed, ""));
+		} else if (GeneralComunicator.getWorkspace().getSentMailStorage().equalsIgnoreCase(GWTWorkspace.MAIL_STORAGE_MAIL_FOLDER)) {
+			// Check if system is in read only mode
+			workspaceService.getUserWorkspace(new AsyncCallback<GWTWorkspace>() {
+				@Override
+				public void onSuccess(GWTWorkspace result) {
+					if (!result.isSystemReadOnly()) {
+						showMailPopup();
+					} else {
+						Main.get().showError("SystemReadOnly",
+								new OKMException("OKM-" + ErrorCode.ORIGIN_OKMBrowser + ErrorCode.CAUSE_SystemReadOnlyMode, ""));
+					}
+				}
 
+				@Override
+				public void onFailure(Throwable caught) {
+					Main.get().showError("getUserWorkspace", caught);
+				}
+			});
+		} else {
+			showMailPopup();
+		}
+	}
+
+	private void showMailPopup() {
+		Main.get().mailEditorPopup.setWidth("900px");
+		Main.get().mailEditorPopup.drawMailEditor();
+		Main.get().mailEditorPopup.center();
 	}
 
 	/**

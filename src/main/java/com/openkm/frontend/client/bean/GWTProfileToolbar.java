@@ -266,7 +266,6 @@ public class GWTProfileToolbar implements IsSerializable {
 		sb.append(", downloadPdfVisible=").append(downloadPdfVisible);
 		sb.append(", printVisible=").append(printVisible);
 		sb.append(", addDocumentVisible=").append(addDocumentVisible);
-		sb.append(", writeMailVisible=").append(writeMailVisible);
 		sb.append(", lockVisible=").append(lockVisible);
 		sb.append(", unlockVisible=").append(unlockVisible);
 		sb.append(", checkinVisible=").append(checkinVisible);

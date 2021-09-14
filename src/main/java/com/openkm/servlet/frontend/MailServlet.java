@@ -22,17 +22,22 @@
 package com.openkm.servlet.frontend;
 
 import com.openkm.api.*;
+import com.openkm.bean.Document;
 import com.openkm.bean.Mail;
 import com.openkm.bean.Repository;
 import com.openkm.core.*;
 import com.openkm.frontend.client.OKMException;
+import com.openkm.frontend.client.bean.GWTDocument;
 import com.openkm.frontend.client.bean.GWTMail;
+import com.openkm.frontend.client.constants.GWTRepository;
+import com.openkm.frontend.client.constants.rpc.GWTMailConstants;
 import com.openkm.frontend.client.constants.service.ErrorCode;
 import com.openkm.frontend.client.service.OKMMailService;
 import com.openkm.frontend.client.widget.filebrowser.GWTFilter;
 import com.openkm.module.db.DbAuthModule;
 import com.openkm.principal.PrincipalAdapterException;
 import com.openkm.servlet.frontend.util.MailComparator;
+import com.openkm.spring.PrincipalUtils;
 import com.openkm.util.GWTUtil;
 import com.openkm.util.MailUtils;
 import com.openkm.util.pagination.FilterUtils;
@@ -423,9 +428,161 @@ public class MailServlet extends OKMRemoteServiceServlet implements OKMMailServi
 			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_Database),
 					e.getMessage());
 		} catch (LockException e) {
-            log.warn(e.getMessage(), e);
-            throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_Lock),
-                    e.getMessage());
-        }
+			log.warn(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_Lock),
+					e.getMessage());
+		}
+	}
+
+	@Override
+	public GWTMail sendMail(List<String> uuidList, Map<String, List<String>> recipients, String subject, String message, boolean attachment)
+			throws OKMException {
+		try {
+			String sentPath = OKMRepository.getInstance().getMailFolder(null).getPath() + "/" + Mail.SENT;
+			return sendMail(uuidList, recipients, subject, message, attachment, sentPath);
+		} catch (OKMException e) {
+			log.error(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_General), e.getMessage());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_Messaging), e.getMessage());
+		}
+	}
+
+	@Override
+	public GWTMail sendMail(List<String> uuidList, Map<String, List<String>> recipients, String subject, String message, boolean attachment,
+							String storePath) throws OKMException {
+		updateSessionManager();
+		List<String> toMails = new ArrayList<>();
+		List<String> ccMails = new ArrayList<>();
+		List<String> bccMails = new ArrayList<>();
+		List<String> replyToMails = new ArrayList<>();
+
+		try {
+			for (String key : recipients.keySet()) {
+				List<String> values = recipients.get(key);
+
+				if (GWTMailConstants.RECIPIENT_TYPE_TO_USER.equals(key)) {
+					toMails = addMails(values, null, toMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_TO_ROLE.equals(key)) {
+					toMails = addMails(null, values, toMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_EXTERNAL_TO_MAIL.equals(key)) {
+					toMails.addAll(values);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_CC_USER.equals(key)) {
+					ccMails = addMails(values, null, ccMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_CC_ROLE.equals(key)) {
+					ccMails = addMails(null, values, ccMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_EXTERNAL_CC_MAIL.equals(key)) {
+					ccMails.addAll(values);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_BCC_USER.equals(key)) {
+					bccMails = addMails(values, null, bccMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_BCC_ROLE.equals(key)) {
+					bccMails = addMails(null, values, bccMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_EXTERNAL_BCC_MAIL.equals(key)) {
+					bccMails.addAll(values);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_REPLY_USER.equals(key)) {
+					replyToMails = addMails(values, null, replyToMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_REPLY_ROLE.equals(key)) {
+					replyToMails = addMails(null, values, replyToMails);
+				}
+
+				if (GWTMailConstants.RECIPIENT_TYPE_EXTERNAL_REPLY_MAIL.equals(key)) {
+					replyToMails.addAll(values);
+				}
+			}
+
+			// Check that the folder exists
+			OKMFolder.getInstance().createMissingFolders(null, storePath);
+
+			// Create date path, only if "Mail folder" is selected
+			String path = storePath;
+			if (storePath.startsWith("/" + GWTRepository.MAIL) && storePath.endsWith(Mail.SENT)) {
+				path = MailUtils.createGroupPath(null, storePath, Calendar.getInstance());
+			}
+
+			String from = new DbAuthModule().getMail(null, PrincipalUtils.getUser());
+			Mail mail = OKMMail.getInstance().sendMailWithAttachments(null, from, toMails, ccMails, bccMails, replyToMails, subject, message, uuidList, path);
+			return GWTUtil.copy(mail, getUserWorkspaceSession());
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_IO), e.getMessage());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_Messaging), e.getMessage());
+		}
+	}
+
+	@Override
+	public List<GWTDocument> getAttachments(String uuid) throws OKMException {
+		List<GWTDocument> attachments = new ArrayList<>();
+
+		try {
+			for (Document doc : OKMMail.getInstance().getAttachments(null, uuid)) {
+				GWTDocument gWTDoc = GWTUtil.copy(doc, getUserWorkspaceSession());
+				gWTDoc.setParentPath(GWTUtil.getParent(doc.getPath()));
+				gWTDoc.setName(GWTUtil.getName(doc.getPath()));
+				attachments.add(gWTDoc);
+			}
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMDocumentService, ErrorCode.CAUSE_IO), e.getMessage());
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new OKMException(ErrorCode.get(ErrorCode.ORIGIN_OKMMailService, ErrorCode.CAUSE_Messaging), e.getMessage());
+		}
+
+		return attachments;
+	}
+
+	/**
+	 * addMails
+	 */
+	private List<String> addMails(List<String> userNames, List<String> roleNames, List<String> mails) throws PrincipalAdapterException {
+		if (roleNames != null) {
+			if (userNames == null) {
+				userNames = new ArrayList<>();
+			}
+
+			for (String role : roleNames) {
+				List<String> usersInRole = OKMAuth.getInstance().getUsersByRole(null, role);
+
+				for (String user : usersInRole) {
+					if (!userNames.contains(user)) {
+						userNames.add(user);
+					}
+				}
+			}
+		}
+
+		if (userNames != null) {
+			for (String user : userNames) {
+				String mail = new DbAuthModule().getMail(null, user);
+				if (!mails.contains(mail)) {
+					mails.add(mail);
+				}
+			}
+		}
+
+		return mails;
 	}
 }

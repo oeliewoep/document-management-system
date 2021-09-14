@@ -600,7 +600,7 @@ public class MailAccountServlet extends BaseServlet {
 		int maId = WebUtils.getInt(request, "ma_id");
 		String ma_user = WebUtils.getString(request, "ma_user");
 		int start = WebUtils.getInt(request, "start", 1);
-		Session session = Session.getDefaultInstance(MailUtils.getProperties());
+		Session session = MailUtils.getDefaultSession();
 		List<Map<String, Object>> serverMails = new ArrayList<Map<String, Object>>();
 
 		// Open connection
@@ -665,7 +665,7 @@ public class MailAccountServlet extends BaseServlet {
 		log.debug("serverImport({}, {}, {})", new Object[]{userId, request, response});
 		int maId = WebUtils.getInt(request, "ma_id");
 		long msgId = WebUtils.getLong(request, "msg_id");
-		Session session = Session.getDefaultInstance(MailUtils.getProperties());
+		Session session = MailUtils.getDefaultSession();
 
 		// Open connection
 		MailAccount ma = MailAccountDAO.findByPk(maId);

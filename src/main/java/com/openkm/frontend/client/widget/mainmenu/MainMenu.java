@@ -1189,7 +1189,7 @@ public class MainMenu extends Composite {
 	Command sendNewMailOKM = new Command() {
 		public void execute() {
 			if (mainMenuOption.writeMailOption) {
-				// Main.get().mainPanel.topPanel.toolBar.executeWriteMail();
+				Main.get().mainPanel.topPanel.toolBar.executeWriteMail();
 			}
 		}
 	};

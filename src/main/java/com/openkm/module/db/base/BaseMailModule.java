@@ -193,15 +193,6 @@ public class BaseMailModule {
 		mail.setContent(nMail.getContent());
 		mail.setMimeType(nMail.getMimeType());
 
-		// Get attachments
-		ArrayList<Document> attachments = new ArrayList<>();
-
-		for (NodeDocument nDocument : NodeDocumentDAO.getInstance().findByParent(nMail.getUuid())) {
-			attachments.add(BaseDocumentModule.getProperties(user, nDocument));
-		}
-
-		mail.setAttachments(attachments);
-
 		// Get permissions
 		BaseModule.setPermissions(nMail, mail);
 

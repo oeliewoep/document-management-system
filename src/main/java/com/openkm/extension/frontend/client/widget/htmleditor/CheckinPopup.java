@@ -32,6 +32,7 @@ import com.openkm.frontend.client.extension.comunicator.GeneralComunicator;
 import com.openkm.frontend.client.service.OKMDocumentService;
 import com.openkm.frontend.client.service.OKMDocumentServiceAsync;
 import com.openkm.frontend.client.util.Util;
+import com.openkm.frontend.client.widget.notify.NotifyHandler;
 import com.openkm.frontend.client.widget.notify.NotifyPanel;
 
 /**
@@ -39,7 +40,7 @@ import com.openkm.frontend.client.widget.notify.NotifyPanel;
  *
  * @author jllort
  */
-public class CheckinPopup extends DialogBox {
+public class CheckinPopup extends DialogBox implements NotifyHandler {
 	private final OKMDocumentServiceAsync documentService = (OKMDocumentServiceAsync) GWT.create(OKMDocumentService.class);
 
 	/**
@@ -171,7 +172,7 @@ public class CheckinPopup extends DialogBox {
 		messageScroll = new ScrollPanel(message);
 		messageScroll.setAlwaysShowScrollBars(false);
 
-		notifyPanel = new NotifyPanel();
+		notifyPanel = new NotifyPanel(this);
 		vNotifyPanel.add(commentTXT);
 		vNotifyPanel.add(messageScroll);
 		vNotifyPanel.add(errorNotify);
@@ -315,5 +316,19 @@ public class CheckinPopup extends DialogBox {
 		} else if (incrementVersion == INCREASE_MAJOR) {
 			hIncreaseVersionPanel.remove(increaseMinorVersion);
 		}
+	}
+
+	@Override
+	public void onChange() {
+		evaluateSendButton();
+	}
+
+	/**
+	 * evaluateSendButton
+	 */
+	public void evaluateSendButton() {
+		boolean enabled = message.getText().trim().length() > 0 && (!notifyPanel.getUsersToNotify().equals("")
+				|| !notifyPanel.getRolesToNotify().equals("") || !notifyPanel.getExternalMailAddress().equals(""));
+		sendButton.setEnabled(enabled);
 	}
 }

@@ -72,7 +72,7 @@ public class TabMail extends Composite implements HasMailEvent, HasMailHandlerEx
 	private List<TabMailExtension> widgetExtensionList;
 	private List<MailHandlerExtension> mailHandlerExtensionList;
 	private List<PropertyGroupHandlerExtension> propertyGroupHandlerExtensionList;
-	private boolean visibleButton = true; // Sets visibleButtons enabled to default view 
+	private boolean visibleButton = true; // Sets visibleButtons enabled to default view
 	private int selectedTab = 0; // Used to determine selected tab to maintain on change document, because not all documents
 	// have the same numeber of tabs ( document group properties are variable )
 	private int latestSelectedTab = 0;
@@ -153,7 +153,7 @@ public class TabMail extends Composite implements HasMailEvent, HasMailHandlerEx
 			it.next().setPixelSize(width, height - TAB_HEIGHT);
 		}
 
-		if (!propertyGroup.isEmpty()) { // Sets size to propety groups	
+		if (!propertyGroup.isEmpty()) { // Sets size to propety groups
 			for (Iterator<PropertyGroup> it = propertyGroup.iterator(); it.hasNext(); ) {
 				PropertyGroup group = it.next();
 				group.setPixelSize(width, height - TAB_HEIGHT);
@@ -166,7 +166,7 @@ public class TabMail extends Composite implements HasMailEvent, HasMailHandlerEx
 	/**
 	 * Sets document values
 	 *
-	 * @param doc The document object
+	 * @param gWTMail The mail object
 	 */
 	public void setProperties(GWTMail gWTMail) {
 		mail.set(gWTMail);
@@ -388,7 +388,7 @@ public class TabMail extends Composite implements HasMailEvent, HasMailHandlerEx
 	public void removePropertyGroup() {
 		selectedTab = tabPanel.getSelectedIndex(); // Sets the actual selected Tab
 
-		// Removes group 
+		// Removes group
 		PropertyGroup group = (PropertyGroup) tabPanel.getWidget(selectedTab);
 		group.removeGroup();
 		propertyGroup.remove(group);
@@ -511,7 +511,7 @@ public class TabMail extends Composite implements HasMailEvent, HasMailHandlerEx
 	}
 
 	/**
-	 * resizingIncubatorWidgets 
+	 * resizingIncubatorWidgets
 	 *
 	 * Needs resizing if not widgets disappears
 	 */

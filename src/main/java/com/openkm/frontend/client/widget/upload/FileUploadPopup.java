@@ -44,7 +44,7 @@ import java.util.Collection;
 public class FileUploadPopup extends DialogBox {
 	private Button closeButton;
 	private Button addButton;
-	private Button sendButton;
+	public Button sendButton;
 	private VerticalPanel vPanel;
 	private HorizontalPanel vButtonPanel;
 	private FancyFileUpload ffUpload;

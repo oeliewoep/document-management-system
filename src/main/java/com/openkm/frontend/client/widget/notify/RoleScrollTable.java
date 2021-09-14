@@ -23,6 +23,10 @@ package com.openkm.frontend.client.widget.notify;
 
 import com.google.gwt.gen2.table.client.AbstractScrollTable.ScrollPolicy;
 import com.google.gwt.gen2.table.client.AbstractScrollTable.ScrollTableImages;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.gen2.table.client.FixedWidthFlexTable;
 import com.google.gwt.gen2.table.client.FixedWidthGrid;
 import com.google.gwt.gen2.table.client.ScrollTable;
@@ -39,9 +43,8 @@ import java.util.List;
  * RoleScrollTable
  *
  * @author jllort
- *
  */
-public class RoleScrollTable extends Composite {
+public class RoleScrollTable extends Composite implements HasDoubleClickHandlers {
 
 	public static final int NUMBER_OF_COLUMNS = 1;
 
@@ -231,7 +234,7 @@ public class RoleScrollTable extends Composite {
 	 * Removes all rows except the first
 	 */
 	public void removeAllRows() {
-		// Purge all rows 
+		// Purge all rows
 		while (dataTable.getRowCount() > 0) {
 			dataTable.removeRow(0);
 		}
@@ -263,5 +266,10 @@ public class RoleScrollTable extends Composite {
 	 */
 	public FixedWidthGrid getDataTable() {
 		return table.getDataTable();
+	}
+
+	@Override
+	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
 }

@@ -75,6 +75,7 @@ public class WorkspaceServlet extends OKMRemoteServiceServlet implements OKMWork
 		workspace.setWorkflowProcessIntanceVariablePath(Config.WORKFLOW_PROCESS_INSTANCE_VARIABLE_PATH);
 		workspace.setSessionId(getThreadLocalRequest().getSession().getId());
 		workspace.setMinSearchCharacters(Config.MIN_SEARCH_CHARACTERS);
+		workspace.setSystemReadOnly(Config.SYSTEM_READONLY);
 
 		// Tinymce
 		workspace.setTinymceTheme(Config.TINYMCE_THEME);
@@ -159,6 +160,9 @@ public class WorkspaceServlet extends OKMRemoteServiceServlet implements OKMWork
 
 			// acrobat plgin preview
 			workspace.setAcrobatPluginPreview(up.getPrfMisc().isAcrobatPluginPreview());
+
+			// Mail Default Storage
+			workspace.setSentMailStorage(up.getPrfMisc().getSentMailStorage() == null ? GWTWorkspace.MAIL_STORAGE_MAIL_FOLDER : up.getPrfMisc().getSentMailStorage());
 
 			// increase version
 			if (up.getPrfMisc().isIncreaseVersion()) {
