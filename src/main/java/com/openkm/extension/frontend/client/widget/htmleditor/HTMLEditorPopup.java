@@ -192,10 +192,10 @@ public class HTMLEditorPopup extends DialogBox {
 		String skin = GeneralComunicator.getWorkspace().getTinymceSkin();
 		String skinVariant = GeneralComunicator.getWorkspace().getTinymceSkinVariant();
 		String plugins = GeneralComunicator.getWorkspace().getTinymcePlugins();
-		String themeButtons1 = GeneralComunicator.getWorkspace().getTinimceThemeButtons1();
-		String themeButtons2 = GeneralComunicator.getWorkspace().getTinimceThemeButtons2();
-		String themeButtons3 = GeneralComunicator.getWorkspace().getTinimceThemeButtons3();
-		String themeButtons4 = GeneralComunicator.getWorkspace().getTinimceThemeButtons4();
+		String themeButtons1 = GeneralComunicator.getWorkspace().getTinymceThemeButtons1();
+		String themeButtons2 = GeneralComunicator.getWorkspace().getTinymceThemeButtons2();
+		String themeButtons3 = GeneralComunicator.getWorkspace().getTinymceThemeButtons3();
+		String themeButtons4 = GeneralComunicator.getWorkspace().getTinymceThemeButtons4();
 		String checkinText = GeneralComunicator.i18n("general.menu.edit.checkin");
 		String cancelCheckoutText = GeneralComunicator.i18n("general.menu.edit.cancel.checkout");
 		String searchDocumentText = GeneralComunicator.i18n("general.menu.file.find.document");

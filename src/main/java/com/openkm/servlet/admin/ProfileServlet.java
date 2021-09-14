@@ -314,6 +314,7 @@ public class ProfileServlet extends BaseServlet {
 		prf.getPrfMenu().getPrfFile().setSendDocumentLinkVisible(WebUtils.getBoolean(request, "prf_menu_file_send_document_link_visible"));
 		prf.getPrfMenu().getPrfFile().setSendDocumentAttachmentVisible(WebUtils.getBoolean(request, "prf_menu_file_send_document_attachment_visible"));
 		prf.getPrfMenu().getPrfFile().setForwardMailVisible(WebUtils.getBoolean(request, "prf_menu_file_forward_mail_visible"));
+		prf.getPrfMenu().getPrfFile().setWriteMailVisible(WebUtils.getBoolean(request, "prf_menu_file_write_mail_visible"));
 
 		// Menu Bookmarks
 		prf.getPrfMenu().getPrfBookmark().setManageBookmarksVisible(WebUtils.getBoolean(request, "prf_menu_bookmark_manage_bookmarks_visible"));
@@ -409,6 +410,7 @@ public class ProfileServlet extends BaseServlet {
 		prf.getPrfToolbar().setLockVisible(WebUtils.getBoolean(request, "prf_toolbar_lock_visible"));
 		prf.getPrfToolbar().setUnlockVisible(WebUtils.getBoolean(request, "prf_toolbar_unlock_visible"));
 		prf.getPrfToolbar().setAddDocumentVisible(WebUtils.getBoolean(request, "prf_toolbar_add_document_visible"));
+		prf.getPrfToolbar().setWriteMailVisible(WebUtils.getBoolean(request, "prf_toolbar_write_mail_visible"));
 		prf.getPrfToolbar().setCheckoutVisible(WebUtils.getBoolean(request, "prf_toolbar_checkout_visible"));
 		prf.getPrfToolbar().setCheckinVisible(WebUtils.getBoolean(request, "prf_toolbar_checkin_visible"));
 		prf.getPrfToolbar().setCancelCheckoutVisible(WebUtils.getBoolean(request, "prf_toolbar_cancel_checkout_visible"));

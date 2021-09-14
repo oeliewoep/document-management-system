@@ -123,7 +123,7 @@ public class CommonUI {
 			}
 
 			if (found) {
-				// At loading time in profiles can defined other tab than desktop. 
+				// At loading time in profiles can defined other tab than desktop.
 				// If actual loading status is STARTUP_LOADING_TAXONOMY_EVAL_PARAMS should not change tab
 				// This indicates we're on startup loading
 				if (Main.get().startUp.getStatus() != StartUp.STARTUP_LOADING_TAXONOMY_EVAL_PARAMS) {
@@ -358,6 +358,20 @@ public class CommonUI {
 		url += ".gif";
 		return url;
 	}
+
+    /**
+     * showBackgrounGrayEffect
+     */
+    public static native void showBackgrounGrayEffect() /*-{
+        new $wnd.showBackgrounGrayEffect();
+    }-*/;
+
+    /**
+     * showBackgrounGrayEffect
+     */
+    public static native void hideBackgrounGrayEffect() /*-{
+        new $wnd.hideBackgrounGrayEffect();
+    }-*/;
 
 	/**
 	 * initJavaScriptApi

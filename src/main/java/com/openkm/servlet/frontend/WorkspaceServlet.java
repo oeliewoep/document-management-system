@@ -81,10 +81,16 @@ public class WorkspaceServlet extends OKMRemoteServiceServlet implements OKMWork
 		workspace.setTinymceSkin(Config.TINYMCE_SKIN);
 		workspace.setTinymceSkinVariant(Config.TINYMCE_SKIN_VARIANT);
 		workspace.setTinymcePlugins(Config.TINYMCE_PLUGINS);
-		workspace.setTinimceThemeButtons1(Config.TINYMCE_THEME_BUTTONS1);
-		workspace.setTinimceThemeButtons2(Config.TINYMCE_THEME_BUTTONS2);
-		workspace.setTinimceThemeButtons3(Config.TINYMCE_THEME_BUTTONS3);
-		workspace.setTinimceThemeButtons4(Config.TINYMCE_THEME_BUTTONS4);
+		workspace.setTinymceThemeButtons1(Config.TINYMCE_THEME_BUTTONS1);
+        workspace.setTinymceThemeButtons2(Config.TINYMCE_THEME_BUTTONS2);
+        workspace.setTinymceThemeButtons3(Config.TINYMCE_THEME_BUTTONS3);
+        workspace.setTinymceThemeButtons4(Config.TINYMCE_THEME_BUTTONS4);
+
+        // TinyMCE 4
+        workspace.setTinymce4Theme(Config.TINYMCE4_THEME);
+        workspace.setTinymce4Plugins(Config.TINYMCE4_PLUGINS);
+        workspace.setTinymce4Toolbar1(Config.TINYMCE4_TOOLBAR1);
+        workspace.setTinymce4Toolbar2(Config.TINYMCE4_TOOLBAR2);
 
 		// Syntax highlighter
 		workspace.setHtmlSyntaxHighlighterCore(Config.HTML_SINTAXHIGHLIGHTER_CORE);
@@ -271,6 +277,7 @@ public class WorkspaceServlet extends OKMRemoteServiceServlet implements OKMWork
 			availableOption.setSendDocumentLinkOption(up.getPrfMenu().getPrfFile().isSendDocumentLinkVisible());
 			availableOption.setSendDocumentAttachmentOption(up.getPrfMenu().getPrfFile().isSendDocumentAttachmentVisible());
 			availableOption.setForwardMailOption(up.getPrfMenu().getPrfFile().isForwardMailVisible());
+			availableOption.setWriteMailOption(up.getPrfMenu().getPrfFile().isWriteMailVisible());
 
 			// Menu Edit
 			availableOption.setLockOption(up.getPrfMenu().getPrfEdit().isLockVisible());
@@ -338,6 +345,7 @@ public class WorkspaceServlet extends OKMRemoteServiceServlet implements OKMWork
 			// Is visible on toolbar && available option too
 			GWTProfileToolbar profileToolbar = new GWTProfileToolbar();
 			profileToolbar.setAddDocumentVisible(up.getPrfToolbar().isAddDocumentVisible() && availableOption.isAddDocumentOption());
+			profileToolbar.setWriteMailVisible(up.getPrfToolbar().isWriteMailVisible() && availableOption.isWriteMailOption());
 			profileToolbar.setAddPropertyGroupVisible(up.getPrfToolbar().isAddPropertyGroupVisible()
 					&& availableOption.isAddPropertyGroupOption());
 			profileToolbar.setAddSubscriptionVisible(up.getPrfToolbar().isAddSubscriptionVisible()
@@ -475,7 +483,7 @@ public class WorkspaceServlet extends OKMRemoteServiceServlet implements OKMWork
 			}
 
 			workspace.setAskDragAndDropUpdates(Config.ASK_DRAG_AND_DROP_UPDATES);
-			
+
 			// Saving workspace to session ( will be used to get extracolumn data )
 			saveUserWorkspaceSession(workspace);
 		} catch (DatabaseException e) {

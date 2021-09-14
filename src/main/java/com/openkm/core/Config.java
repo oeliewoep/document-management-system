@@ -328,6 +328,12 @@ public class Config {
 	public static final String PROPERTY_TINYMCE_THEME_BUTTONS3 = "tinymce.theme.buttons3";
 	public static final String PROPERTY_TINYMCE_THEME_BUTTONS4 = "tinymce.theme.buttons4";
 
+	// TinyMCE 4
+    public static final String PROPERTY_TINYMCE4_THEME = "extension.tinymce4.theme";
+    public static final String PROPERTY_TINYMCE4_PLUGINS = "extension.tinymce4.plugins";
+    public static final String PROPERTY_TINYMCE4_TOOLBAR1 = "extension.tinymce4.toolbar1";
+    public static final String PROPERTY_TINYMCE4_TOOLBAR2 = "extension.tinymce4.toolbar2";
+
 	// HTML syntax highlighter
 	public static String PROPERTY_HTML_SINTAXHIGHLIGHTER_CORE = "html.syntaxhighlighter.core";
 	public static String PROPERTY_HTML_SINTAXHIGHLIGHTER_THEME = "html.syntaxhighlighter.theme";
@@ -623,6 +629,12 @@ public class Config {
 	public static String TINYMCE_THEME_BUTTONS2 = "cut, copy, paste, pastetext, pasteword, |, search, replace, |, bullist, numlist, |, outdent, indent, blockquote, |, undo, redo, |, link, unlink, anchor, image, cleanup, help, code, |, insertdate, inserttime, preview, |, forecolor, backcolor";
 	public static String TINYMCE_THEME_BUTTONS3 = "tablecontrols, |, hr, removeformat, visualaid, |, sub, sup, |, charmap, emotions, iespell, media, advhr, |, print, |, ltr, rtl";
 	public static String TINYMCE_THEME_BUTTONS4 = "insertlayer, moveforward, movebackward, absolute, |, styleprops, |, cite, abbr, acronym, del, ins, attribs, |, visualchars, nonbreaking, template, pagebreak";
+
+	// TinyMCE 4
+    public static String TINYMCE4_THEME = "modern";
+    public static String TINYMCE4_PLUGINS = "advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor code";
+    public static String TINYMCE4_TOOLBAR1 = "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image";
+    public static String TINYMCE4_TOOLBAR2 = "okm_checkin okm_cancelcheckout okm_searchDocument okm_searchFolder okm_searchImage okm_searchDocumentToDownload okm_codeHighlight | print preview media | forecolor backcolor emoticons";
 
 	// HTML syntax highlighter
 	public static String HTML_SINTAXHIGHLIGHTER_CORE = "shCoreEclipse.css";
@@ -1159,6 +1171,12 @@ public class Config {
 			TINYMCE_THEME_BUTTONS2 = ConfigDAO.getString(PROPERTY_TINYMCE_THEME_BUTTONS2, cfg.getProperty(PROPERTY_TINYMCE_THEME_BUTTONS2, TINYMCE_THEME_BUTTONS2));
 			TINYMCE_THEME_BUTTONS3 = ConfigDAO.getString(PROPERTY_TINYMCE_THEME_BUTTONS3, cfg.getProperty(PROPERTY_TINYMCE_THEME_BUTTONS3, TINYMCE_THEME_BUTTONS3));
 			TINYMCE_THEME_BUTTONS4 = ConfigDAO.getString(PROPERTY_TINYMCE_THEME_BUTTONS4, cfg.getProperty(PROPERTY_TINYMCE_THEME_BUTTONS4, TINYMCE_THEME_BUTTONS4));
+
+			// TinyMCE 4
+            TINYMCE4_THEME = ConfigDAO.getString(PROPERTY_TINYMCE4_THEME, cfg.getProperty(PROPERTY_TINYMCE4_THEME, TINYMCE4_THEME));
+            TINYMCE4_PLUGINS = ConfigDAO.getString(PROPERTY_TINYMCE4_PLUGINS, cfg.getProperty(PROPERTY_TINYMCE4_PLUGINS, TINYMCE4_PLUGINS));
+            TINYMCE4_TOOLBAR1 = ConfigDAO.getString(PROPERTY_TINYMCE4_TOOLBAR1, cfg.getProperty(PROPERTY_TINYMCE4_TOOLBAR1, TINYMCE4_TOOLBAR1));
+            TINYMCE4_TOOLBAR2 = ConfigDAO.getString(PROPERTY_TINYMCE4_TOOLBAR2, cfg.getProperty(PROPERTY_TINYMCE4_TOOLBAR2, TINYMCE4_TOOLBAR2));
 
 			// HTML syntax highlighter
 			PROPERTY_HTML_SINTAXHIGHLIGHTER_CORE = ConfigDAO.getString(PROPERTY_HTML_SINTAXHIGHLIGHTER_CORE, cfg.getProperty(PROPERTY_HTML_SINTAXHIGHLIGHTER_CORE, HTML_SINTAXHIGHLIGHTER_CORE));
